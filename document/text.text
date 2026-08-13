@@ -1,0 +1,442 @@
+RAG (Retrieval-Augmented Generation)
+1. Introduction
+
+RAG (Retrieval-Augmented Generation) is a technique used in Artificial Intelligence to make Large Language Models (LLMs) answer questions using external or private information.
+
+Instead of depending only on the knowledge already stored in an LLM, RAG first retrieves relevant information from documents or a database and then provides that information to the LLM to generate an answer.
+
+Simple Definition
+
+RAG = Retrieve relevant information + Generate an answer using that information.
+
+2. Why Do We Need RAG?
+
+LLMs such as ChatGPT have a large amount of general knowledge, but they may not know:
+
+Private company documents
+Newly created documents
+Internal databases
+Personal files
+College notes
+Product information
+Company policies
+Specific project documentation
+
+For example, suppose you have 100 PDF files containing your company's documentation.
+
+If you ask a normal LLM:
+
+"What is our company's leave policy?"
+
+The LLM may not know the answer because the company's private documents were not part of its training data.
+
+With RAG, the system searches the company's documents, finds the relevant information, and gives it to the LLM.
+
+3. How RAG Works
+
+The basic RAG process is:
+
+Documents
+     ↓
+Document Loading
+     ↓
+Text Splitting / Chunking
+     ↓
+Create Embeddings
+     ↓
+Vector Database
+     ↓
+User Question
+     ↓
+Question Embedding
+     ↓
+Similarity Search
+     ↓
+Relevant Documents
+     ↓
+LLM
+     ↓
+Final Answer
+4. Main Components of RAG
+4.1 Documents
+
+The first step is to provide information to the RAG system.
+
+Documents can be:
+
+PDF
+TXT
+Word documents
+HTML pages
+Markdown
+Database records
+Websites
+
+Example:
+
+documents/
+├── company_policy.pdf
+├── employee_handbook.pdf
+├── project_documentation.pdf
+└── faq.txt
+4.2 Document Loading
+
+The documents are loaded into the application.
+
+For example:
+
+PDF → Text
+Word → Text
+Website → Text
+Database → Data
+
+The purpose is to convert different sources into text that the system can process.
+
+5. Text Chunking
+
+Large documents are divided into smaller pieces called chunks.
+
+For example:
+
+Large PDF
+    ↓
+Chunk 1
+Chunk 2
+Chunk 3
+Chunk 4
+Chunk 5
+
+Why do we split documents?
+
+Because sending an entire large document to an LLM is inefficient.
+
+For example:
+
+100-page PDF
+      ↓
+Small relevant chunks
+      ↓
+Send only useful chunks to LLM
+
+A chunk might contain around 500–1000 words, depending on the application.
+
+6. Embeddings
+
+An embedding converts text into a numerical representation called a vector.
+
+For example:
+
+"What is the leave policy?"
+          ↓
+    Embedding Model
+          ↓
+[0.21, -0.45, 0.73, 0.18, ...]
+
+The vector represents the meaning of the text.
+
+This allows the system to compare the meaning of a user's question with the meaning of document chunks.
+
+7. Vector Database
+
+The generated embeddings are stored in a vector database.
+
+Examples include:
+
+FAISS
+Chroma
+Qdrant
+Pinecone
+Weaviate
+
+Example:
+
+Document Chunk
+      ↓
+Embedding
+      ↓
+Vector Database
+
+The vector database allows the system to quickly find information that is semantically similar to the user's question.
+
+8. User Query
+
+The user asks a question.
+
+For example:
+
+"What is the company's annual leave policy?"
+
+The question is converted into an embedding.
+
+User Question
+      ↓
+Embedding Model
+      ↓
+Question Vector
+9. Retrieval
+
+The question vector is compared with vectors stored in the vector database.
+
+The system finds the most relevant chunks.
+
+For example:
+
+User Question
+      ↓
+Vector Search
+      ↓
+Chunk 27 → 95% similarity
+Chunk 41 → 89% similarity
+Chunk 12 → 82% similarity
+
+The most relevant chunks are retrieved.
+
+10. Augmentation
+
+The retrieved information is added to the user's question.
+
+For example:
+
+Question:
+"What is the annual leave policy?"
+
+Retrieved Context:
+"Employees receive 18 days of annual leave per year..."
+
+The system creates a prompt containing both the question and the retrieved context.
+
+11. Generation
+
+The LLM receives the retrieved information and generates the final answer.
+
+Question + Retrieved Context
+             ↓
+            LLM
+             ↓
+       Final Answer
+
+Example:
+
+Answer: Employees are entitled to 18 days of annual leave per year.
+
+12. Complete RAG Example
+
+Suppose you create a College Notes RAG Chatbot.
+
+You have:
+
+e-governance.pdf
+data-mining.pdf
+cloud-computing.pdf
+python.pdf
+
+The user asks:
+
+"What is e-Governance?"
+
+The RAG system performs:
+
+1. Receive question
+       ↓
+2. Convert question to embedding
+       ↓
+3. Search vector database
+       ↓
+4. Find relevant content from e-governance.pdf
+       ↓
+5. Retrieve relevant chunks
+       ↓
+6. Send chunks + question to LLM
+       ↓
+7. Generate answer
+
+The chatbot can then answer based on the content in your PDFs.
+
+13. RAG vs Normal LLM
+Normal LLM	RAG
+Uses existing model knowledge	Uses model + external knowledge
+May not know private data	Can access private data
+May give outdated information	Can retrieve updated information
+No document search	Searches documents
+Hard to provide source context	Can provide document sources
+Good for general questions	Good for knowledge-based applications
+14. Advantages of RAG
+1. Uses Private Data
+
+RAG can answer questions from private documents without training the LLM on those documents.
+
+2. More Relevant Answers
+
+The LLM receives information specifically related to the user's question.
+
+3. Updated Information
+
+Documents can be updated without retraining the entire LLM.
+
+4. Source-Based Answers
+
+A RAG system can provide references to the documents used to generate an answer.
+
+5. Reduced Hallucination
+
+Providing relevant context can reduce the chance of the LLM making unsupported claims.
+
+15. Limitations of RAG
+
+RAG is not perfect.
+
+Common problems include:
+
+Poor document chunking
+Incorrect retrieval
+Poor-quality embeddings
+Missing information
+Irrelevant search results
+LLM hallucinations
+Large document processing costs
+Vector database management
+
+Therefore, good chunking, retrieval, embeddings, and prompting are important.
+
+16. Technologies Used in RAG
+
+A typical RAG application may use:
+
+Python
+   ↓
+LangChain / LlamaIndex
+   ↓
+Embedding Model
+   ↓
+Vector Database
+   ↓
+LLM
+   ↓
+FastAPI
+   ↓
+Frontend
+Common technologies
+
+Programming Language
+
+Python
+
+LLM
+
+OpenAI models
+Gemini
+Claude
+Llama
+Other open-source models
+
+Embedding Models
+
+OpenAI embeddings
+Sentence Transformers
+Other embedding models
+
+Vector Databases
+
+FAISS
+Chroma
+Qdrant
+Pinecone
+Weaviate
+
+Backend
+
+FastAPI
+Flask
+17. RAG Architecture
+
+A complete application can look like this:
+
+                    ┌──────────────┐
+                    │   Documents  │
+                    │ PDF / TXT    │
+                    └──────┬───────┘
+                           ↓
+                    ┌──────────────┐
+                    │   Chunking   │
+                    └──────┬───────┘
+                           ↓
+                    ┌──────────────┐
+                    │  Embeddings  │
+                    └──────┬───────┘
+                           ↓
+                    ┌──────────────┐
+                    │Vector Database│
+                    └──────┬───────┘
+                           │
+                           │
+User Question ─────────────┤
+                           ↓
+                    ┌──────────────┐
+                    │   Retriever  │
+                    └──────┬───────┘
+                           ↓
+                    Relevant Context
+                           ↓
+                    ┌──────────────┐
+                    │     LLM      │
+                    └──────┬───────┘
+                           ↓
+                       Answer
+18. RAG Learning Roadmap
+
+If you want to learn RAG, follow this order:
+
+Python
+  ↓
+Python Libraries
+  ↓
+APIs & JSON
+  ↓
+LLM Basics
+  ↓
+Prompt Engineering
+  ↓
+Embeddings
+  ↓
+Vector Databases
+  ↓
+Document Chunking
+  ↓
+Similarity Search
+  ↓
+RAG
+  ↓
+LangChain / LlamaIndex
+  ↓
+FastAPI
+  ↓
+Docker & Deployment
+
+FastAPI is not required to understand RAG. You can learn RAG first and then learn FastAPI to expose your RAG system as a web API.
+
+19. Real-World Applications
+
+RAG can be used to build:
+
+📚 AI study assistants
+📄 PDF chatbots
+🏢 Company knowledge assistants
+💻 Documentation chatbots
+🛒 E-commerce product assistants
+⚖️ Legal document search systems
+🏥 Medical information assistants
+💬 Customer support systems
+🔍 Enterprise search systems
+20. Conclusion
+
+Retrieval-Augmented Generation (RAG) combines information retrieval with Large Language Models.
+
+Instead of asking an LLM to answer only from its existing knowledge, RAG:
+
+Finds relevant information
+        ↓
+Retrieves it
+        ↓
+Provides it to the LLM
+        ↓
+Generates an answer
