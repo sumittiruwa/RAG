@@ -56,7 +56,7 @@ This will install:
 
 The `.env` file is already configured with the GROQ API key:
 ```env
-GROQ_API_KEY=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
+GROQ_API_KEY=your_api_key_here
 SECRET_KEY=your-secret-key-change-this-in-production
 ENVIRONMENT=development
 ```
@@ -177,7 +177,7 @@ python -m uvicorn app.main:app --reload --port 8001
 ### Issue: GROQ API Key not working
 
 1. Check `.env` file in backend folder
-2. Verify the API key is exactly: `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`
+GROQ_API_KEY=your_api_key_here
 3. No spaces before/after the key
 
 ### Issue: Frontend can't connect to backend

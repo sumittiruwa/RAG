@@ -247,7 +247,7 @@ python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 cat backend/.env
 
 # Ensure GROQ_API_KEY is set correctly
-GROQ_API_KEY=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
+GROQ_API_KEY=your_api_key_here
 ```
 
 ### No documents indexed
